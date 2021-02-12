@@ -21,13 +21,14 @@ int main(int argc, char *argv[]) {
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) error("ERROR opening socket");
     server = gethostbyname(argv[1]);
-    if ((server = NULL)) error("ERROR, no such host\n");
+    if ((server == NULL)) error("ERROR, no such host\n");
     // start with a clean address structure
     memset((char *) &serv_addr, 0, sizeof(serv_addr));
-    
-    serv_addr.sin_family = AF_INET; // internet socket
+    // internet socket
+    serv_addr.sin_family = AF_INET;
+    // copy address
+    bcopy((char *) server->h_addr, (char*) &serv_addr.sin_addr.s_addr, server->h_length);
 
-    // bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
     serv_addr.sin_port = htons(port);
     if (connect(sockfd, (const struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) 
     error("ERROR connecting");
