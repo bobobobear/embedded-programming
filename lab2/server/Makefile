@@ -1,5 +1,6 @@
-input = client.c
-output = client
+input = server.c
+output = server
+port = 12345
 CC := gcc
 CFLAGS := -g -Wall
 
@@ -9,4 +10,4 @@ $(output): $(input)
 clean:
 	rm -f $(output)
 debug:
-	gdb --args $(output) 127.0.0.1 12345
+	gdb --args $(output) $(port)
