@@ -1,7 +1,7 @@
-CC := gcc
-CFLAGS := -g -Wall
 input = client.c
 output = client
+CC := gcc
+CFLAGS := -g -Wall
 
 all: $(output)
 $(output): $(input)
