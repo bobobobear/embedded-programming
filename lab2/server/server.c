@@ -11,7 +11,7 @@ void error(char *m) {
 }
 
 int main(int argc, char *argv[]) {
-    int sockfd, newsockfd, port, clilen, n;
+    int sockfd, newsockfd, port, clilen, n, multiply;
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
     if (argc < 2) error("ERROR, no port provided\n");
@@ -35,11 +35,15 @@ int main(int argc, char *argv[]) {
     if (newsockfd < 0) error("ERROR on accept");
     
     n = read(newsockfd,buffer,255);
-    
+
     if (n < 0) error("ERROR reading from socket");
     
     printf("Message received: %s\n",buffer);
-    n = write(newsockfd,"Message acknowledged",21);
+    
+    multiply = 5*atoi(buffer);
+    sprintf(buffer,"%d",multiply);
+    
+    n = write(newsockfd, buffer, sizeof(buffer));
 
     if (n < 0) error("ERROR writing back to socket");
     return 0;

@@ -27,13 +27,13 @@ int main(int argc, char *argv[]) {
     // internet socket
     serv_addr.sin_family = AF_INET;
     // copy address
-    bcopy((char *) server->h_addr, (char*) &serv_addr.sin_addr.s_addr, server->h_length);
+    bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
 
     serv_addr.sin_port = htons(port);
     if (connect(sockfd, (const struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) 
     error("ERROR connecting");
 
-    printf("Please enter the message: ");
+    printf("Please enter the number: ");
     fgets(buffer, 255, stdin);
 
     n = write(sockfd, buffer, strlen(buffer));
