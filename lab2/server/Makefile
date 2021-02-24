@@ -1,13 +1,11 @@
-src = server.c
-output = server
+bin = server server2
 port = 12345
-CC := gcc
-CFLAGS := -g -Wall
+CC = gcc
+CFLAGS = -Wall
 
-all: $(output)
-$(output): $(src)
-	$(CC) $(CFLAGS) $< -o $@
+all: $(bin)
+
+$(object): %: %.c
+	$(CC) -o $@ $^ $(CFLAGS) -lpthread
 clean:
 	rm -f $(output)
-debug:
-	gdb --args $(output) $(port)

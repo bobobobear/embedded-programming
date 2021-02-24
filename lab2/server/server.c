@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
     if (bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) error("ERROR binding to socket");
     
-    listen(sockfd,2);
+    listen(sockfd, 2);
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr, (unsigned int* ) &clilen);
     if (newsockfd < 0) error("ERROR on accept");
