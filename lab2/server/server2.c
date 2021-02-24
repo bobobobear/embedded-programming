@@ -12,10 +12,25 @@ void error(char *m) {
     perror(m);
 }
 
-int main(int argc, char *argv[]) {
-    int sockfd, newsockfd, port, clilen, n, multiply;
+void *server() {
+    int newsockfd, n, multiply;
     char buffer[256];
+    n = read(newsockfd, buffer, 255);
+    if (n < 0) error("ERROR reading from socket");
+    printf("Message received: %s\n",buffer);
+    multiply = 5*atoi(buffer);
+    sprintf(buffer,"%d",multiply);
+    
+    n = write(newsockfd, buffer, sizeof(buffer));
+    if (n < 0) error("ERROR writing back to socket");
+
+    return NULL;
+}
+
+int main(int argc, char *argv[]) {
+    int sockfd, newsockfd, port, clilen, multiply;
     struct sockaddr_in serv_addr, cli_addr;
+    pthread_t tA, tB;
     if (argc < 2) error("ERROR, no port provided\n");
     port = atoi(argv[1]);
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -31,23 +46,15 @@ int main(int argc, char *argv[]) {
     
     listen(sockfd,2);
     clilen = sizeof(cli_addr);
-    
     newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr, (unsigned int* ) &clilen);
-    
     if (newsockfd < 0) error("ERROR on accept");
     
-    n = read(newsockfd,buffer,255);
+    pthread_create(&tA, NULL, server, NULL);
+    pthread_create(&tB, NULL, server, NULL);
 
-    if (n < 0) error("ERROR reading from socket");
+    pthread_join(tA, NULL);
+    pthread_join(tB, NULL);
     
-    printf("Message received: %s\n",buffer);
-    
-    multiply = 5*atoi(buffer);
-    sprintf(buffer,"%d",multiply);
-    
-    n = write(newsockfd, buffer, sizeof(buffer));
-
-    if (n < 0) error("ERROR writing back to socket");
     return 0;
 }
 

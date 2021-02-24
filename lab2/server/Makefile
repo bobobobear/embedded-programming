@@ -1,11 +1,11 @@
-input = server.c
+src = server.c
 output = server
 port = 12345
 CC := gcc
 CFLAGS := -g -Wall
 
 all: $(output)
-$(output): $(input)
+$(output): $(src)
 	$(CC) $(CFLAGS) $< -o $@
 clean:
 	rm -f $(output)

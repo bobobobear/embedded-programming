@@ -29,22 +29,17 @@ int main(int argc, char *argv[]) {
     
     listen(sockfd,2);
     clilen = sizeof(cli_addr);
-    
     newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr, (unsigned int* ) &clilen);
-    
     if (newsockfd < 0) error("ERROR on accept");
     
-    n = read(newsockfd,buffer,255);
-
+    n = read(newsockfd, buffer, 255);
     if (n < 0) error("ERROR reading from socket");
-    
     printf("Message received: %s\n",buffer);
-    
+
     multiply = 5*atoi(buffer);
     sprintf(buffer,"%d",multiply);
     
     n = write(newsockfd, buffer, sizeof(buffer));
-
     if (n < 0) error("ERROR writing back to socket");
     return 0;
 }
