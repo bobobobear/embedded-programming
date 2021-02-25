@@ -35,7 +35,7 @@ int main() {
     /* main() thread now waits for both threads to finish */
     pthread_join(TA, NULL);
     pthread_join(TB, NULL);
-
+    pthread_mutex_destroy(&mutex1);
     printf("\n pthread2 completed \n");
     return 0;
 }
