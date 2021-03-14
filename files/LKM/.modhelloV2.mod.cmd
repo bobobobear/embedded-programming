@@ -1,0 +1,1 @@
+cmd_/home/ubuntu/embedded-programming/files/LKM/modhelloV2.mod := { echo  /home/ubuntu/embedded-programming/files/LKM/modhelloV2.o;  echo; } > /home/ubuntu/embedded-programming/files/LKM/modhelloV2.mod
