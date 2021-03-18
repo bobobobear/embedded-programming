@@ -11,8 +11,9 @@ static bool ledOn = 0; // used to toggle state of LED
 
 // The GPIO IRQ Handler function
 static irq_handler_t rpi_gpio_isr(unsigned int irq, void *dev_id, struct pt_regs *regs)
-{  // toggle the LED state
-	// set LED accordingly
+{  
+	ledOn = !ledOn;
+	gpio_set_value(ledGreen, ledon);
 	printk(KERN_ALERT "GPIO Interrupt!\n"));
 	return (irq_handler_t) IRQ_HANDLED; // announce IRQ handled
 }
@@ -21,8 +22,8 @@ static irq_handler_t rpi_gpio_isr(unsigned int irq, void *dev_id, struct pt_regs
 static void __exit rpi_gpio_exit(void)
 {  
 	gpio_set_value(ledGreen, 0); // turn the LED off
-	gpio_free(ledgreen); // free the LED GPIO
-	gpio_free(pushbutton); // free the Button GPIO
+	gpio_free(ledGreen); // free the LED GPIO
+	gpio_free(pushButton); // free the Button GPIO
 	free_irq(irqNumber, NULL); // free the IRQ number, no *dev_id
 	printk(KERN_ALERT "Goodbye from the GPIO LKM!\n");
 }
@@ -34,7 +35,7 @@ static int __init rpi_gpio_init(void)
 	printk(KERN_ALERT " Initializing the GPIO LKM\n");
 	ledOn = true; // default for LED is ON
 	gpio_request(ledGreen, "sysfs"); // request for LED GPIO
-	gpio_direction_output(ledGren, ledOn); // set in output mode and turn on LED
+	gpio_direction_output(ledGreen, ledOn); // set in output mode and turn on LED
 	gpio_request(pushButton, "sysfs"); // request for push Button GPIO
 	gpio_direction_input(pushButton); // set up as input
 	gpio_set_debounce(pushButton, 1000); // debounce delay of 1000ms
@@ -48,3 +49,7 @@ static int __init rpi_gpio_init(void)
 			NULL); // *dev_id for shared interrupt lines - NULL
 	return result;
 }
+
+module_init(rpi_gpio_init);
+module_exit(rpi_gpio_exit);
+MODULE_LICENSE("GPL");
