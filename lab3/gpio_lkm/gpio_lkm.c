@@ -13,8 +13,8 @@ static bool ledOn = 0; // used to toggle state of LED
 static irq_handler_t rpi_gpio_isr(unsigned int irq, void *dev_id, struct pt_regs *regs)
 {  
 	ledOn = !ledOn;
-	gpio_set_value(ledGreen, ledon);
-	printk(KERN_ALERT "GPIO Interrupt!\n"));
+	gpio_set_value(ledGreen, ledOn);
+	printk(KERN_ALERT "GPIO Interrupt!\n");
 	return (irq_handler_t) IRQ_HANDLED; // announce IRQ handled
 }
 
@@ -43,7 +43,7 @@ static int __init rpi_gpio_init(void)
 	printk(KERN_ALERT "Button mapped to IRQ: %d\n", irqNumber);
 	// Requests for an interrupt line
 	result = request_irq(irqNumber, // interrupt number requested
-			(irq_handler_t) rpi_gpia_isr, // isr handler function
+			(irq_handler_t) rpi_gpio_isr, // isr handler function
 			IRQF_TRIGGER_RISING, // trigger on rising edge
 			"rpi_gpio_handler", // used in /proc/interrupts
 			NULL); // *dev_id for shared interrupt lines - NULL
