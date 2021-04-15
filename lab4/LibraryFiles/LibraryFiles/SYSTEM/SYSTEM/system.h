@@ -17,9 +17,10 @@
 
 #include "led.h"
 #include "oled.h"
-#include "buzzer.h"
-
 #include "show.h"
+#include "BUZZ.h"
+#include "UART.h"
+#include "BUTTON.h"
 
 void systemInit(void);
 

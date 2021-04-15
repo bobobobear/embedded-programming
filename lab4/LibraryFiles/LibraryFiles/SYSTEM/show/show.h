@@ -8,6 +8,7 @@
 
 void show_task(void *pvParameters);
 void oled_show(void);
+void oled_timer(void);
 void APP_Show(void);
 void OLED_ShowCheckConfirming(void);
 void OLED_ShowChecking(void);
